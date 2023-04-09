@@ -22,4 +22,7 @@ export class User {
 
   @Column()
   active: boolean;
+
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  last_updated: Date | string;
 }

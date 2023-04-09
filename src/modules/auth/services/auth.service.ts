@@ -22,26 +22,33 @@ export class AuthService {
   ) {}
 
   async signUp(authCredentialsDto: AuthCredentialsDto): Promise<void> {
-    const { username, password } = authCredentialsDto;
+    const { username, password, firstName, lastName, email } =
+      authCredentialsDto;
 
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(password, salt);
 
     const user = this.userRepository.create({
       username,
+      email,
+      first_name: firstName,
+      last_name: lastName,
       password: hashedPassword,
+      active: true,
     });
 
+    console.log(user);
     try {
       await this.userRepository.save(user);
     } catch (error) {
+      console.log(error.code);
+      console.log(error);
       if (error.code === '23505') {
         // duplicate username
         throw new ConflictException('Username already exists');
       } else {
         throw new InternalServerErrorException();
       }
-      console.log(error.code);
     }
   }
 
