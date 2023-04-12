@@ -20,7 +20,7 @@ export class User {
   @Column()
   last_name: string;
 
-  @Column()
+  @Column({ default: true })
   active: boolean;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
