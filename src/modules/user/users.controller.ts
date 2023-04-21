@@ -17,8 +17,8 @@ import { AuthGuard } from '@nestjs/passport';
 //   import { CreateTaskDto } from './dto/create-task.dto';
 import { GetUsersFilterDto } from './dto/get-users-filter.dto';
 //   import { UpdateTaskStatusDto } from './dto/update-task-status.dto';
-import { User } from './user.entity';
 import { UsersService } from './users.service';
+import { User } from '../database/entities/user.entity';
 
 @Controller('users')
 @UseGuards(AuthGuard())

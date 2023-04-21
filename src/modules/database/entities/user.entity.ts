@@ -1,9 +1,18 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: number;
+
+  @Column({ unique: true })
+  username: string;
+
+  @Column()
+  password: string;
+
+  @Column()
+  email: string;
 
   @Column()
   first_name: string;
@@ -11,12 +20,9 @@ export class User {
   @Column()
   last_name: string;
 
-  @Column()
-  username: string;
+  @Column({ default: true })
+  active: boolean;
 
-  @Column()
-  email: string;
-
-  @Column()
-  password: string;
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  last_updated: Date | string;
 }
