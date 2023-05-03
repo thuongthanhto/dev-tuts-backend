@@ -8,6 +8,8 @@ import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './jwt.strategy';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { User } from '../database/entities/user.entity';
+import { IsNotExist } from 'src/core/utils/validators/is-not-exists.validator';
+import { IsExist } from 'src/core/utils/validators/is-exists.validator';
 
 @Module({
   imports: [
@@ -23,7 +25,7 @@ import { User } from '../database/entities/user.entity';
     }),
     TypeOrmModule.forFeature([User]),
   ],
-  providers: [AuthService, JwtStrategy],
+  providers: [IsExist, IsNotExist, AuthService, JwtStrategy],
   controllers: [AuthController],
   exports: [JwtStrategy, PassportModule],
 })
