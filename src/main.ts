@@ -4,7 +4,7 @@ import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 import validationOptions from './core/utils/validation-options';
 import { useContainer } from 'class-validator';
 
-const whitelist = ['localhost'];
+const whitelist = ['localhost:3000'];
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
