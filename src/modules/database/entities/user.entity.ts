@@ -17,7 +17,7 @@ export class User {
   @Column()
   last_name: string;
 
-  @Column()
+  @Column({ nullable: true })
   refresh_token: string;
 
   @Column({ default: true })
