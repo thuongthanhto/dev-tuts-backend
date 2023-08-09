@@ -2,7 +2,6 @@ import {
   Injectable,
   InternalServerErrorException,
   Logger,
-  //   NotFoundException,
 } from '@nestjs/common';
 import { GetUsersFilterDto } from './dto/get-users-filter.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -41,35 +40,4 @@ export class UsersService {
       throw new InternalServerErrorException();
     }
   }
-
-  //   async getUserById(id: string): Promise<User> {
-  //     const found = await this.userRepository.findOneBy(id);
-
-  //     if (!found) {
-  //       throw new NotFoundException(`Task with ID "${id}" not found`);
-  //     }
-
-  //     return found;
-  //   }
-
-  //   async deleteTask(id: string): Promise<void> {
-  //     const result = await this.userRepository.delete(id);
-
-  //     if (result.affected === 0) {
-  //       throw new NotFoundException(`Task with ID "${id}" not found`);
-  //     }
-  //   }
-
-  //   async updateTaskStatus(
-  //     id: string,
-  //     status: TaskStatus,
-  //     user: User,
-  //   ): Promise<Task> {
-  //     const task = await this.getUserById(id, user);
-
-  //     task.status = status;
-  //     await this.userRepository.save(task);
-
-  //     return task;
-  //   }
 }

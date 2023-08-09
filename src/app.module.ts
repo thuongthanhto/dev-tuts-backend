@@ -6,7 +6,7 @@ import { AppController } from './modules/app/controllers/app.controller';
 import { AppService } from './modules/app/services/app.service';
 import { AuthModule } from './modules/auth/auth.module';
 import { DatabaseModule } from './modules/database/database.module';
-import { UsersModule } from './modules/user/users.module';
+import { UsersModule } from './modules/users/users.module';
 
 @Module({
   imports: [

@@ -1,32 +1,31 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { AuthService } from './services/auth.service';
-import { AuthController } from './controllers/auth.controller';
+import { AuthService } from './auth.service';
+import { AuthController } from './auth.controller';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
-import { JwtStrategy } from './jwt.strategy';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { User } from '../database/entities/user.entity';
 import { IsNotExist } from 'src/core/utils/validators/is-not-exists.validator';
 import { IsExist } from 'src/core/utils/validators/is-exists.validator';
+import { AccessTokenStrategy, RefreshTokenStrategy } from './strategies';
 
 @Module({
   imports: [
     ConfigModule,
     PassportModule.register({ defaultStrategy: 'jwt' }),
-    JwtModule.registerAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: async (configService: ConfigService) => ({
-        secret: configService.get('JWT_SECRET'),
-        signOptions: { expiresIn: '60s' },
-      }),
-    }),
+    JwtModule.register({}),
     TypeOrmModule.forFeature([User]),
   ],
-  providers: [IsExist, IsNotExist, AuthService, JwtStrategy],
+  providers: [
+    IsExist,
+    IsNotExist,
+    AuthService,
+    AccessTokenStrategy,
+    RefreshTokenStrategy,
+  ],
   controllers: [AuthController],
-  exports: [JwtStrategy, PassportModule],
+  exports: [AccessTokenStrategy, RefreshTokenStrategy, PassportModule],
 })
 export class AuthModule {}

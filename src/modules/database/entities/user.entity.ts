@@ -17,6 +17,9 @@ export class User {
   @Column()
   last_name: string;
 
+  @Column()
+  refresh_token: string;
+
   @Column({ default: true })
   active: boolean;
 
