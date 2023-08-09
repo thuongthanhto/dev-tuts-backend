@@ -7,9 +7,9 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
 import { User } from '../database/entities/user.entity';
-import { IsNotExist } from 'src/core/utils/validators/is-not-exists.validator';
-import { IsExist } from 'src/core/utils/validators/is-exists.validator';
 import { AccessTokenStrategy, RefreshTokenStrategy } from './strategies';
+import { IsExist } from '../../core/utils/validators/is-exists.validator';
+import { IsNotExist } from '../../core/utils/validators/is-not-exists.validator';
 
 @Module({
   imports: [
