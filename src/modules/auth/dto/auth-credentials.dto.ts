@@ -16,13 +16,9 @@ export class AuthCredentialsDto {
   password: string;
 
   @IsString()
-  @MinLength(8)
-  @MaxLength(20)
   firstName: string;
 
   @IsString()
-  @MinLength(8)
-  @MaxLength(20)
   lastName: string;
 
   @IsEmail()
