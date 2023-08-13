@@ -8,6 +8,7 @@ import validationOptions from './core/utils/validation-options';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     logger: ['error', 'warn', 'log', 'debug', 'verbose'],
+    cors: true,
   });
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
   app.enableShutdownHooks();
