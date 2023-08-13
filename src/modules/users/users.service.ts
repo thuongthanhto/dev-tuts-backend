@@ -3,10 +3,11 @@ import {
   InternalServerErrorException,
   Logger,
 } from '@nestjs/common';
-import { GetUsersFilterDto } from './dto/get-users-filter.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User } from '../database/entities/user.entity';
+
+import { GetUsersFilterDto } from './dto/get-users-filter.dto';
+import { User } from '../database/entities';
 
 @Injectable()
 export class UsersService {

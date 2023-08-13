@@ -5,8 +5,8 @@ import { Request } from 'express';
 import { AuthService } from './auth.service';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 import { AuthEmailLoginDto } from './dto/auth-email-login.dto';
-import { AccessTokenGuard } from '../../common/guards/accessToken.guard';
-import { RefreshTokenGuard } from '../../common/guards/refreshToken.guard';
+import { AccessTokenGuard } from '../../core/guards';
+import { RefreshTokenGuard } from '../../core/guards/refreshToken.guard';
 
 @Controller('auth')
 export class AuthController {

@@ -6,8 +6,11 @@ import { AuthController } from './auth.controller';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
-import { User } from '../database/entities/user.entity';
-import { AccessTokenStrategy, RefreshTokenStrategy } from './strategies';
+import { User } from '../database/entities';
+import {
+  AccessTokenStrategy,
+  RefreshTokenStrategy,
+} from '../../core/strategies';
 import { IsExist } from '../../core/utils/validators/is-exists.validator';
 import { IsNotExist } from '../../core/utils/validators/is-not-exists.validator';
 

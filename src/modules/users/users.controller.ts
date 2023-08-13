@@ -9,8 +9,8 @@ import {
 import { ConfigService } from '@nestjs/config';
 import { GetUsersFilterDto } from './dto/get-users-filter.dto';
 import { UsersService } from './users.service';
-import { User } from '../database/entities/user.entity';
-import { AccessTokenGuard } from '../../common/guards/accessToken.guard';
+import { User } from '../database/entities';
+import { AccessTokenGuard } from '../../core/guards';
 
 @Controller('users')
 @UseGuards(AccessTokenGuard)
