@@ -3,7 +3,7 @@ import {
   ForbiddenException,
   Injectable,
   InternalServerErrorException,
-  UnauthorizedException,
+  NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -64,7 +64,7 @@ export class AuthService {
 
       return tokens;
     } else {
-      throw new UnauthorizedException('Please check your login credentials');
+      throw new NotFoundException('Please check your login credentials');
     }
   }
 
