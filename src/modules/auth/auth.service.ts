@@ -62,7 +62,7 @@ export class AuthService {
 
       await this.updateRefreshToken(email, tokens.refresh_token);
 
-      return tokens;
+      return {...tokens, user_data: {ability: user.role.ability, email: user.email, first_name: user.first_name, last_name: user.last_name, id: user.id, role: user.role.name}};
     } else {
       throw new NotFoundException('Please check your login credentials');
     }

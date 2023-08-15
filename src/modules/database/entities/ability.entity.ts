@@ -1,6 +1,6 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { User } from './user.entity';
 import { Exclude } from 'class-transformer';
+import { Role } from './role.entity';
 
 @Entity()
 export class Ability {
@@ -19,7 +19,7 @@ export class Ability {
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   last_updated: Date | string;
 
-  @ManyToOne((_type) => User, (user) => user.abilitys, { eager: false })
+  @ManyToOne((_type) => Role, (role) => role.ability, { eager: false })
   @Exclude({ toPlainOnly: true })
-  user: User;
+  role: Role;
 }
