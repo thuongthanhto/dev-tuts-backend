@@ -1,12 +1,12 @@
-import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Request } from 'express';
 
 import { AuthService } from './auth.service';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 import { AuthEmailLoginDto } from './dto/auth-email-login.dto';
-import { AccessTokenGuard } from '../../core/guards';
-import { RefreshTokenGuard } from '../../core/guards/refreshToken.guard';
+import { AccessTokenGuard, GoogleOauthGuard } from '../../core/guards';
+import { RefreshTokenGuard } from '../../core/guards/refresh-token.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -38,5 +38,17 @@ export class AuthController {
     const email = req.user['email'];
     console.log(refreshToken, email);
     return this.authService.refresh(email, refreshToken);
+  }
+
+  @Get('google')
+  @UseGuards(GoogleOauthGuard)
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  async auth() {}
+
+  @Get('google/callback')
+  @UseGuards(GoogleOauthGuard)
+  async googleAuthCallback(@Req() req, @Res() res) {
+    // const token = await this.authService.signIn(req.user);
+    return req.user;
   }
 }

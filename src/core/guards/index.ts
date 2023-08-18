@@ -1,4 +1,5 @@
-import { AccessTokenGuard } from './accessToken.guard';
-import { RefreshTokenGuard } from './refreshToken.guard';
+import { AccessTokenGuard } from './access-token.guard';
+import { RefreshTokenGuard } from './refresh-token.guard';
+import { GoogleOauthGuard } from './google-oauth.guard';
 
-export { AccessTokenGuard, RefreshTokenGuard };
+export { AccessTokenGuard, RefreshTokenGuard, GoogleOauthGuard };

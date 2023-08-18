@@ -1,4 +1,5 @@
-import { AccessTokenStrategy } from './accessToken.strategy';
-import { RefreshTokenStrategy } from './refreshToken.strategy';
+import { AccessTokenStrategy } from './access-token.strategy';
+import { RefreshTokenStrategy } from './refresh-token.strategy';
+import { GoogleOauthStrategy } from './google-oauth.strategy';
 
-export { AccessTokenStrategy, RefreshTokenStrategy };
+export { AccessTokenStrategy, RefreshTokenStrategy, GoogleOauthStrategy };
