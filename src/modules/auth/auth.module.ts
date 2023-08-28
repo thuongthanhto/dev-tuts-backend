@@ -9,7 +9,6 @@ import { ConfigModule } from '@nestjs/config';
 import { User } from '../database/entities';
 import {
   AccessTokenStrategy,
-  GoogleOauthStrategy,
   RefreshTokenStrategy,
 } from '../../core/strategies';
 import { IsExist } from '../../core/utils/validators/is-exists.validator';
@@ -28,9 +27,8 @@ import { IsNotExist } from '../../core/utils/validators/is-not-exists.validator'
     AuthService,
     AccessTokenStrategy,
     RefreshTokenStrategy,
-    GoogleOauthStrategy
   ],
   controllers: [AuthController],
-  exports: [AccessTokenStrategy, RefreshTokenStrategy, GoogleOauthStrategy, PassportModule],
+  exports: [AccessTokenStrategy, RefreshTokenStrategy, PassportModule],
 })
 export class AuthModule {}

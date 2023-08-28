@@ -1,4 +1,14 @@
-import { Body, Controller, Get, HttpStatus, Post, Req, Res, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Post,
+  Req,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Request } from 'express';
 
@@ -7,6 +17,8 @@ import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 import { AuthEmailLoginDto } from './dto/auth-email-login.dto';
 import { AccessTokenGuard, GoogleOauthGuard } from '../../core/guards';
 import { RefreshTokenGuard } from '../../core/guards/refresh-token.guard';
+import { AuthGoogleLoginDto } from './dto/auth-google-login.dto';
+import { LoginResponseType } from './auth.types';
 
 @Controller('auth')
 export class AuthController {
@@ -18,6 +30,7 @@ export class AuthController {
   }
 
   @Post('/signin')
+  @HttpCode(HttpStatus.OK)
   signIn(
     @Body() authEmailLoginDto: AuthEmailLoginDto,
   ): Promise<{ access_token: string; refresh_token: string }> {
@@ -40,15 +53,14 @@ export class AuthController {
     return this.authService.refresh(email, refreshToken);
   }
 
-  @Get('google')
-  @UseGuards(GoogleOauthGuard)
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  async auth() {}
+  @Post('/google')
+  @HttpCode(HttpStatus.OK)
+  async login(@Body() loginDto: AuthGoogleLoginDto) {
+    console.log('loginDto', loginDto);
+    const socialData = await this.authService.getProfileByToken(loginDto);
 
-  @Get('google/callback')
-  @UseGuards(GoogleOauthGuard)
-  async googleAuthCallback(@Req() req, @Res() res) {
-    // const token = await this.authService.signIn(req.user);
-    return req.user;
+    console.log(socialData);
+
+    return this.authService.validateSocialLogin('google', socialData);
   }
 }

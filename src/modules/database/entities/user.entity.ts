@@ -1,4 +1,11 @@
-import { Column, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Ability } from './ability.entity';
 import { Role } from './role.entity';
 
@@ -28,6 +35,8 @@ export class User {
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   last_updated: Date | string;
 
-  @OneToOne((_type) => Role, (role) => role.user, { eager: true })
-  role: Role;
+  @ManyToOne(() => Role, {
+    eager: true,
+  })
+  role?: Role | null;
 }

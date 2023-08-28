@@ -1,6 +1,8 @@
 import {
   ConflictException,
   ForbiddenException,
+  HttpException,
+  HttpStatus,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
@@ -9,18 +11,32 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { OAuth2Client } from 'google-auth-library';
 
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 import { User } from '../database/entities';
 import { AuthEmailLoginDto } from './dto/auth-email-login.dto';
+import { genPassword } from 'src/core/utils/helper';
+import { AuthGoogleLoginDto } from './dto/auth-google-login.dto';
+import { ConfigService } from '@nestjs/config';
+import { LoginResponseType, SocialInterface } from './auth.types';
+import { NullableType } from 'src/core/utils/types/nullable.type';
 
 @Injectable()
 export class AuthService {
+  private google: OAuth2Client;
+
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
     private jwtService: JwtService,
-  ) {}
+    private configService: ConfigService,
+  ) {
+    this.google = new OAuth2Client(
+      configService.get('google.clientId', { infer: true }),
+      configService.get('google.clientSecret', { infer: true }),
+    );
+  }
 
   async signUp(authCredentialsDto: AuthCredentialsDto): Promise<void> {
     const { password, firstName, lastName, email } = authCredentialsDto;
@@ -50,9 +66,7 @@ export class AuthService {
     }
   }
 
-  async signIn(
-    params: AuthEmailLoginDto,
-  ): Promise<{ access_token: string; refresh_token: string }> {
+  async signIn(params: AuthEmailLoginDto): Promise<LoginResponseType> {
     const { email, password } = params;
 
     const user = await this.userRepository.findOneBy({ email });
@@ -62,7 +76,16 @@ export class AuthService {
 
       await this.updateRefreshToken(email, tokens.refresh_token);
 
-      return {...tokens, user_data: {ability: user.role.ability, email: user.email, first_name: user.first_name, last_name: user.last_name, id: user.id, role: user.role.name}};
+      return {
+        ...tokens,
+        user: {
+          email: user.email,
+          first_name: user.first_name,
+          last_name: user.last_name,
+          id: user.id,
+          role: user.role,
+        },
+      };
     } else {
       throw new NotFoundException('Please check your login credentials');
     }
@@ -88,7 +111,7 @@ export class AuthService {
           email,
         },
         {
-          secret: process.env.JWT_ACCESS_SECRET,
+          secret: process.env.AUTH_JWT_SECRET,
           expiresIn: '15m',
         },
       ),
@@ -97,7 +120,7 @@ export class AuthService {
           email,
         },
         {
-          secret: process.env.JWT_REFRESH_SECRET,
+          secret: process.env.AUTH_REFRESH_SECRET,
           expiresIn: '7d',
         },
       ),
@@ -132,5 +155,65 @@ export class AuthService {
     await this.updateRefreshToken(email, tokens.refresh_token);
 
     return tokens;
+  }
+
+  async getProfileByToken(
+    loginDto: AuthGoogleLoginDto,
+  ): Promise<SocialInterface> {
+    const ticket = await this.google.verifyIdToken({
+      idToken: loginDto.idToken,
+      audience: [
+        this.configService.getOrThrow('google.clientId', { infer: true }),
+      ],
+    });
+
+    const data = ticket.getPayload();
+
+    if (!data) {
+      throw new HttpException(
+        {
+          status: HttpStatus.UNPROCESSABLE_ENTITY,
+          errors: {
+            user: 'wrongToken',
+          },
+        },
+        HttpStatus.UNPROCESSABLE_ENTITY,
+      );
+    }
+
+    return {
+      id: data.sub,
+      email: data.email,
+      first_name: data.given_name,
+      last_name: data.family_name,
+    };
+  }
+
+  async validateSocialLogin(authProvider: string, socialData: SocialInterface) {
+    let user: NullableType<User>;
+    const socialEmail = socialData.email?.toLowerCase();
+    user = await this.userRepository.findOneBy({
+      email: socialEmail,
+    });
+
+    if (user) {
+      const tokens = await this.getTokens(socialEmail);
+
+      await this.updateRefreshToken(socialEmail, tokens.refresh_token);
+
+      return {
+        ...tokens,
+        user_data: {
+          ability: user.role.ability,
+          email: user.email,
+          first_name: user.first_name,
+          last_name: user.last_name,
+          id: user.id,
+          role: user.role.name,
+        },
+      };
+    } else {
+      throw new NotFoundException('Please check your login credentials');
+    }
   }
 }
