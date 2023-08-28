@@ -16,11 +16,10 @@ import { OAuth2Client } from 'google-auth-library';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 import { User } from '../database/entities';
 import { AuthEmailLoginDto } from './dto/auth-email-login.dto';
-import { genPassword } from 'src/core/utils/helper';
 import { AuthGoogleLoginDto } from './dto/auth-google-login.dto';
 import { ConfigService } from '@nestjs/config';
 import { LoginResponseType, SocialInterface } from './auth.types';
-import { NullableType } from 'src/core/utils/types/nullable.type';
+import { NullableType } from '../../core/utils/types/nullable.type';
 
 @Injectable()
 export class AuthService {

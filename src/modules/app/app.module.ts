@@ -6,9 +6,9 @@ import { AppService } from './services/app.service';
 import { AuthModule } from '../auth/auth.module';
 import { DatabaseModule } from '../database/database.module';
 import { UsersModule } from '../users/users.module';
-import databaseConfig from 'src/core/config/database.config';
-import authConfig from 'src/core/config/auth.config';
-import googleConfig from 'src/core/config/google.config';
+import databaseConfig from '../../core/config/database.config';
+import authConfig from '../../core/config/auth.config';
+import googleConfig from '../../core/config/google.config';
 
 @Module({
   imports: [
