@@ -57,7 +57,6 @@ export class AuthService {
       console.log(error.code);
       console.log(error);
       if (error.code === '23505') {
-        // duplicate email
         throw new ConflictException('Email already exists');
       } else {
         throw new InternalServerErrorException();
