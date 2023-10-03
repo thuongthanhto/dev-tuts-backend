@@ -38,28 +38,24 @@ export class AuthController {
   }
 
   @UseGuards(AccessTokenGuard)
+  @HttpCode(HttpStatus.OK)
   @Get('/logout')
   logout(@Req() req: Request) {
     return this.authService.logout(req.user['email']);
   }
 
   @UseGuards(RefreshTokenGuard)
-  @Get('/refresh')
+  @Get('/refresh-token')
   refresh(@Req() req: Request) {
-    console.log('request', req);
     const refreshToken = req.user['refresh_token'];
     const email = req.user['email'];
-    console.log(refreshToken, email);
     return this.authService.refresh(email, refreshToken);
   }
 
   @Post('/google')
   @HttpCode(HttpStatus.OK)
   async login(@Body() loginDto: AuthGoogleLoginDto) {
-    console.log('loginDto', loginDto);
     const socialData = await this.authService.getProfileByToken(loginDto);
-
-    console.log(socialData);
 
     return this.authService.validateSocialLogin('google', socialData);
   }

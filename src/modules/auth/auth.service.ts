@@ -188,9 +188,8 @@ export class AuthService {
   }
 
   async validateSocialLogin(authProvider: string, socialData: SocialInterface) {
-    let user: NullableType<User>;
     const socialEmail = socialData.email?.toLowerCase();
-    user = await this.userRepository.findOneBy({
+    const user: NullableType<User> = await this.userRepository.findOneBy({
       email: socialEmail,
     });
 
@@ -201,7 +200,7 @@ export class AuthService {
 
       return {
         ...tokens,
-        user_data: {
+        user: {
           ability: user.role.ability,
           email: user.email,
           first_name: user.first_name,

@@ -10,3 +10,8 @@ export class AuthEmailLoginDto {
   @IsNotEmpty()
   password: string;
 }
+
+export class RefreshTokenDto {
+  @IsNotEmpty()
+  refresh_token: string;
+}
