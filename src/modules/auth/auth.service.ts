@@ -201,12 +201,11 @@ export class AuthService {
       return {
         ...tokens,
         user: {
-          ability: user.role.ability,
           email: user.email,
           first_name: user.first_name,
           last_name: user.last_name,
           id: user.id,
-          role: user.role.name,
+          role: user.role,
         },
       };
     } else {
