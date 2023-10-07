@@ -6,23 +6,25 @@ import {
   HttpStatus,
   Post,
   Req,
-  Res,
   UseGuards,
 } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
 import { Request } from 'express';
 
-import { AuthService } from './auth.service';
+import { AuthService } from './services/auth.service';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 import { AuthEmailLoginDto } from './dto/auth-email-login.dto';
-import { AccessTokenGuard, GoogleOauthGuard } from '../../core/guards';
+import { AccessTokenGuard } from '../../core/guards';
 import { RefreshTokenGuard } from '../../core/guards/refresh-token.guard';
-import { AuthGoogleLoginDto } from './dto/auth-google-login.dto';
 import { LoginResponseType } from './auth.types';
+import { AuthGoogleLoginDto } from './dto';
+import { AuthGoogleService } from './services/auth-google.service';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private authGoogleService: AuthGoogleService,
+  ) {}
 
   @Post('/signup')
   signUp(@Body() authCredentialsDto: AuthCredentialsDto): Promise<void> {
@@ -33,7 +35,7 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   signIn(
     @Body() authEmailLoginDto: AuthEmailLoginDto,
-  ): Promise<{ access_token: string; refresh_token: string }> {
+  ): Promise<LoginResponseType> {
     return this.authService.signIn(authEmailLoginDto);
   }
 
@@ -54,8 +56,10 @@ export class AuthController {
 
   @Post('/google')
   @HttpCode(HttpStatus.OK)
-  async login(@Body() loginDto: AuthGoogleLoginDto) {
-    const socialData = await this.authService.getProfileByToken(loginDto);
+  async loginGoogle(
+    @Body() loginDto: AuthGoogleLoginDto,
+  ): Promise<LoginResponseType> {
+    const socialData = await this.authGoogleService.getProfileByToken(loginDto);
 
     return this.authService.validateSocialLogin('google', socialData);
   }

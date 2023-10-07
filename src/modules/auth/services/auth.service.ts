@@ -1,8 +1,6 @@
 import {
   ConflictException,
   ForbiddenException,
-  HttpException,
-  HttpStatus,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
@@ -13,13 +11,11 @@ import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { OAuth2Client } from 'google-auth-library';
 
-import { AuthCredentialsDto } from './dto/auth-credentials.dto';
-import { User } from '../database/entities';
-import { AuthEmailLoginDto } from './dto/auth-email-login.dto';
-import { AuthGoogleLoginDto } from './dto/auth-google-login.dto';
-import { ConfigService } from '@nestjs/config';
-import { LoginResponseType, SocialInterface } from './auth.types';
-import { NullableType } from '../../core/utils/types/nullable.type';
+import { AuthCredentialsDto } from '../dto/auth-credentials.dto';
+import { User } from '../../database/entities';
+import { AuthEmailLoginDto } from '../dto/auth-email-login.dto';
+import { LoginResponseType, SocialInterface } from '../auth.types';
+import { NullableType } from '../../../core/utils/types/nullable.type';
 
 @Injectable()
 export class AuthService {
@@ -29,13 +25,7 @@ export class AuthService {
     @InjectRepository(User)
     private userRepository: Repository<User>,
     private jwtService: JwtService,
-    private configService: ConfigService,
-  ) {
-    this.google = new OAuth2Client(
-      configService.get('google.clientId', { infer: true }),
-      configService.get('google.clientSecret', { infer: true }),
-    );
-  }
+  ) {}
 
   async signUp(authCredentialsDto: AuthCredentialsDto): Promise<void> {
     const { password, firstName, lastName, email } = authCredentialsDto;
@@ -153,38 +143,6 @@ export class AuthService {
     await this.updateRefreshToken(email, tokens.refresh_token);
 
     return tokens;
-  }
-
-  async getProfileByToken(
-    loginDto: AuthGoogleLoginDto,
-  ): Promise<SocialInterface> {
-    const ticket = await this.google.verifyIdToken({
-      idToken: loginDto.idToken,
-      audience: [
-        this.configService.getOrThrow('google.clientId', { infer: true }),
-      ],
-    });
-
-    const data = ticket.getPayload();
-
-    if (!data) {
-      throw new HttpException(
-        {
-          status: HttpStatus.UNPROCESSABLE_ENTITY,
-          errors: {
-            user: 'wrongToken',
-          },
-        },
-        HttpStatus.UNPROCESSABLE_ENTITY,
-      );
-    }
-
-    return {
-      id: data.sub,
-      email: data.email,
-      first_name: data.given_name,
-      last_name: data.family_name,
-    };
   }
 
   async validateSocialLogin(authProvider: string, socialData: SocialInterface) {

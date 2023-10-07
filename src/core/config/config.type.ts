@@ -54,7 +54,7 @@ export type FileConfig = {
 };
 
 export type GoogleConfig = {
-  clientId?: string;
+  clientId: string;
   clientSecret?: string;
 };
 

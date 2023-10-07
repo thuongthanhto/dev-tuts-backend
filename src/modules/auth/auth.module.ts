@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { AuthService } from './auth.service';
+import { AuthService } from './services/auth.service';
 import { AuthController } from './auth.controller';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
@@ -13,6 +13,7 @@ import {
 } from '../../core/strategies';
 import { IsExist } from '../../core/utils/validators/is-exists.validator';
 import { IsNotExist } from '../../core/utils/validators/is-not-exists.validator';
+import { AuthGoogleService } from './services/auth-google.service';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { IsNotExist } from '../../core/utils/validators/is-not-exists.validator'
     IsExist,
     IsNotExist,
     AuthService,
+    AuthGoogleService,
     AccessTokenStrategy,
     RefreshTokenStrategy,
   ],
