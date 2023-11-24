@@ -14,6 +14,7 @@ import {
 import { IsExist } from '../../core/utils/validators/is-exists.validator';
 import { IsNotExist } from '../../core/utils/validators/is-not-exists.validator';
 import { AuthGoogleService } from './services/auth-google.service';
+import { AuthFacebookService } from './services/auth-facebook.service';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { AuthGoogleService } from './services/auth-google.service';
     IsNotExist,
     AuthService,
     AuthGoogleService,
+    AuthFacebookService,
     AccessTokenStrategy,
     RefreshTokenStrategy,
   ],

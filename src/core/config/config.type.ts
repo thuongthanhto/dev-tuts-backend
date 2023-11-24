@@ -39,8 +39,8 @@ export type DatabaseConfig = {
 };
 
 export type FacebookConfig = {
-  appId?: string;
-  appSecret?: string;
+  appId: string;
+  appSecret: string;
 };
 
 export type FileConfig = {

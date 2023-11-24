@@ -16,14 +16,16 @@ import { AuthEmailLoginDto } from './dto/auth-email-login.dto';
 import { AccessTokenGuard } from '../../core/guards';
 import { RefreshTokenGuard } from '../../core/guards/refresh-token.guard';
 import { LoginResponseType } from './auth.types';
-import { AuthGoogleLoginDto } from './dto';
+import { AuthFacebookLoginDto, AuthGoogleLoginDto } from './dto';
 import { AuthGoogleService } from './services/auth-google.service';
+import { AuthFacebookService } from './services/auth-facebook.service';
 
 @Controller('auth')
 export class AuthController {
   constructor(
     private authService: AuthService,
     private authGoogleService: AuthGoogleService,
+    private authFacebookService: AuthFacebookService,
   ) {}
 
   @Post('/signup')
@@ -62,5 +64,16 @@ export class AuthController {
     const socialData = await this.authGoogleService.getProfileByToken(loginDto);
 
     return this.authService.validateSocialLogin('google', socialData);
+  }
+
+  @Post('facebook')
+  @HttpCode(HttpStatus.OK)
+  async login(
+    @Body() loginDto: AuthFacebookLoginDto,
+  ): Promise<LoginResponseType> {
+    const socialData =
+      await this.authFacebookService.getProfileByToken(loginDto);
+
+    return this.authService.validateSocialLogin('facebook', socialData);
   }
 }
