@@ -71,8 +71,8 @@ export type MailConfig = {
 };
 
 export type TwitterConfig = {
-  consumerKey?: string;
-  consumerSecret?: string;
+  consumerKey: string;
+  consumerSecret: string;
 };
 
 export type AllConfigType = {

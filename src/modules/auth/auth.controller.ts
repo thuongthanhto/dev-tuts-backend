@@ -16,9 +16,14 @@ import { AuthEmailLoginDto } from './dto/auth-email-login.dto';
 import { AccessTokenGuard } from '../../core/guards';
 import { RefreshTokenGuard } from '../../core/guards/refresh-token.guard';
 import { LoginResponseType } from './auth.types';
-import { AuthFacebookLoginDto, AuthGoogleLoginDto } from './dto';
+import {
+  AuthFacebookLoginDto,
+  AuthGoogleLoginDto,
+  AuthTwitterLoginDto,
+} from './dto';
 import { AuthGoogleService } from './services/auth-google.service';
 import { AuthFacebookService } from './services/auth-facebook.service';
+import { AuthTwitterService } from './services/auth-twitter.service';
 
 @Controller('auth')
 export class AuthController {
@@ -26,6 +31,7 @@ export class AuthController {
     private authService: AuthService,
     private authGoogleService: AuthGoogleService,
     private authFacebookService: AuthFacebookService,
+    private authTwitterService: AuthTwitterService,
   ) {}
 
   @Post('/signup')
@@ -68,12 +74,23 @@ export class AuthController {
 
   @Post('facebook')
   @HttpCode(HttpStatus.OK)
-  async login(
+  async loginFacebook(
     @Body() loginDto: AuthFacebookLoginDto,
   ): Promise<LoginResponseType> {
     const socialData =
       await this.authFacebookService.getProfileByToken(loginDto);
 
     return this.authService.validateSocialLogin('facebook', socialData);
+  }
+
+  @Post('twitter')
+  @HttpCode(HttpStatus.OK)
+  async loginTwitter(
+    @Body() loginDto: AuthTwitterLoginDto,
+  ): Promise<LoginResponseType> {
+    const socialData =
+      await this.authTwitterService.getProfileByToken(loginDto);
+
+    return this.authService.validateSocialLogin('twitter', socialData);
   }
 }
