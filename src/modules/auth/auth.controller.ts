@@ -2,13 +2,13 @@ import {
   Body,
   Controller,
   Get,
+  Request,
   HttpCode,
   HttpStatus,
   Post,
   Req,
   UseGuards,
 } from '@nestjs/common';
-import { Request } from 'express';
 
 import { AuthService } from './services/auth.service';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
@@ -16,14 +16,9 @@ import { AuthEmailLoginDto } from './dto/auth-email-login.dto';
 import { AccessTokenGuard } from '../../core/guards';
 import { RefreshTokenGuard } from '../../core/guards/refresh-token.guard';
 import { LoginResponseType } from './auth.types';
-import {
-  AuthFacebookLoginDto,
-  AuthGoogleLoginDto,
-  AuthTwitterLoginDto,
-} from './dto';
+import { AuthFacebookLoginDto, AuthGoogleLoginDto } from './dto';
 import { AuthGoogleService } from './services/auth-google.service';
 import { AuthFacebookService } from './services/auth-facebook.service';
-import { AuthTwitterService } from './services/auth-twitter.service';
 
 @Controller('auth')
 export class AuthController {
@@ -31,7 +26,6 @@ export class AuthController {
     private authService: AuthService,
     private authGoogleService: AuthGoogleService,
     private authFacebookService: AuthFacebookService,
-    private authTwitterService: AuthTwitterService,
   ) {}
 
   @Post('/signup')
@@ -50,13 +44,13 @@ export class AuthController {
   @UseGuards(AccessTokenGuard)
   @HttpCode(HttpStatus.OK)
   @Get('/logout')
-  logout(@Req() req: Request) {
+  logout(@Request() req) {
     return this.authService.logout(req.user['email']);
   }
 
   @UseGuards(RefreshTokenGuard)
   @Get('/refresh-token')
-  refresh(@Req() req: Request) {
+  refresh(@Request() req) {
     const refreshToken = req.user['refresh_token'];
     const email = req.user['email'];
     return this.authService.refresh(email, refreshToken);
@@ -81,16 +75,5 @@ export class AuthController {
       await this.authFacebookService.getProfileByToken(loginDto);
 
     return this.authService.validateSocialLogin('facebook', socialData);
-  }
-
-  @Post('twitter')
-  @HttpCode(HttpStatus.OK)
-  async loginTwitter(
-    @Body() loginDto: AuthTwitterLoginDto,
-  ): Promise<LoginResponseType> {
-    const socialData =
-      await this.authTwitterService.getProfileByToken(loginDto);
-
-    return this.authService.validateSocialLogin('twitter', socialData);
   }
 }
