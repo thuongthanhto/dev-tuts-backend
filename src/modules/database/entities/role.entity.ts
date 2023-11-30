@@ -22,9 +22,9 @@ export class Role {
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   last_updated: Date | string;
 
-  @OneToMany((_type) => Ability, (ability) => ability.role, { eager: true })
+  @OneToMany(() => Ability, (ability) => ability.role, { eager: true })
   ability: Ability[];
 
-  @ManyToOne((_type) => User, (user) => user.role, { eager: false })
+  @ManyToOne(() => User, (user) => user.role, { eager: false })
   user: User;
 }
