@@ -6,7 +6,6 @@ import {
   HttpCode,
   HttpStatus,
   Post,
-  Req,
   UseGuards,
 } from '@nestjs/common';
 
@@ -16,7 +15,11 @@ import { AuthEmailLoginDto } from './dto/auth-email-login.dto';
 import { AccessTokenGuard } from '../../core/guards';
 import { RefreshTokenGuard } from '../../core/guards/refresh-token.guard';
 import { LoginResponseType } from './auth.types';
-import { AuthFacebookLoginDto, AuthGoogleLoginDto } from './dto';
+import {
+  AuthFacebookLoginDto,
+  AuthForgotPasswordDto,
+  AuthGoogleLoginDto,
+} from './dto';
 import { AuthGoogleService } from './services/auth-google.service';
 import { AuthFacebookService } from './services/auth-facebook.service';
 
@@ -75,5 +78,13 @@ export class AuthController {
       await this.authFacebookService.getProfileByToken(loginDto);
 
     return this.authService.validateSocialLogin('facebook', socialData);
+  }
+
+  @Post('forgot/password')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async forgotPassword(
+    @Body() forgotPasswordDto: AuthForgotPasswordDto,
+  ): Promise<void> {
+    return this.authService.forgotPassword(forgotPasswordDto.email);
   }
 }

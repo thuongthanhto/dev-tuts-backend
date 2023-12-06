@@ -1,6 +1,8 @@
 import {
   ConflictException,
   ForbiddenException,
+  HttpException,
+  HttpStatus,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
@@ -10,12 +12,17 @@ import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { OAuth2Client } from 'google-auth-library';
+import * as crypto from 'crypto';
+import { randomStringGenerator } from '@nestjs/common/utils/random-string-generator.util';
 
 import { AuthCredentialsDto } from '../dto/auth-credentials.dto';
 import { User } from '../../database/entities';
 import { AuthEmailLoginDto } from '../dto/auth-email-login.dto';
 import { LoginResponseType, SocialInterface } from '../auth.types';
 import { NullableType } from '../../../core/utils/types/nullable.type';
+import { MailService } from '../../mail/mail.service';
+import { ForgotService } from '../../forgot/forgot.service';
+import { UsersService } from '../../users/users.service';
 
 @Injectable()
 export class AuthService {
@@ -25,6 +32,9 @@ export class AuthService {
     @InjectRepository(User)
     private userRepository: Repository<User>,
     private jwtService: JwtService,
+    private usersService: UsersService,
+    private forgotService: ForgotService,
+    private mailService: MailService,
   ) {}
 
   async signUp(authCredentialsDto: AuthCredentialsDto): Promise<void> {
@@ -169,5 +179,39 @@ export class AuthService {
     } else {
       throw new NotFoundException('Please check your login credentials');
     }
+  }
+
+  async forgotPassword(email: string): Promise<void> {
+    const user = await this.usersService.findOne({
+      email,
+    });
+
+    if (!user) {
+      throw new HttpException(
+        {
+          status: HttpStatus.UNPROCESSABLE_ENTITY,
+          errors: {
+            email: 'emailNotExists',
+          },
+        },
+        HttpStatus.UNPROCESSABLE_ENTITY,
+      );
+    }
+
+    const hash = crypto
+      .createHash('sha256')
+      .update(randomStringGenerator())
+      .digest('hex');
+    await this.forgotService.create({
+      hash,
+      user,
+    });
+
+    await this.mailService.forgotPassword({
+      to: email,
+      data: {
+        hash,
+      },
+    });
   }
 }

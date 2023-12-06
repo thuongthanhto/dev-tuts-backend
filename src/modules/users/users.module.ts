@@ -1,14 +1,14 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
-import { AuthModule } from '../auth/auth.module';
 import { User } from '../database/entities';
+import { IsExist, IsNotExist } from '../../core/utils/validators';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User]), AuthModule, ConfigModule],
+  imports: [TypeOrmModule.forFeature([User])],
   controllers: [UsersController],
-  providers: [UsersService],
+  providers: [IsExist, IsNotExist, UsersService],
+  exports: [UsersService],
 })
 export class UsersModule {}
