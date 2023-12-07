@@ -19,6 +19,7 @@ import {
   AuthFacebookLoginDto,
   AuthForgotPasswordDto,
   AuthGoogleLoginDto,
+  AuthResetPasswordDto,
 } from './dto';
 import { AuthGoogleService } from './services/auth-google.service';
 import { AuthFacebookService } from './services/auth-facebook.service';
@@ -87,4 +88,13 @@ export class AuthController {
   ): Promise<void> {
     return this.authService.forgotPassword(forgotPasswordDto.email);
   }
+
+  // @Post('reset/password')
+  // @HttpCode(HttpStatus.NO_CONTENT)
+  // resetPassword(@Body() resetPasswordDto: AuthResetPasswordDto): Promise<void> {
+  //   return this.authService.resetPassword(
+  //     resetPasswordDto.hash,
+  //     resetPasswordDto.password,
+  //   );
+  // }
 }
