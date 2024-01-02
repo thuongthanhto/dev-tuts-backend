@@ -1,8 +1,16 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  Index,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Role } from './role.entity';
+import { Exclude } from 'class-transformer';
+import { EntityHelper } from '../../../core/utils/validators';
 
 @Entity()
-export class User {
+export class User extends EntityHelper {
   @PrimaryGeneratedColumn('uuid')
   id: number;
 
@@ -31,4 +39,9 @@ export class User {
     eager: true,
   })
   role?: Role | null;
+
+  @Column({ type: String, nullable: true })
+  @Index()
+  @Exclude({ toPlainOnly: true })
+  hash: string | null;
 }

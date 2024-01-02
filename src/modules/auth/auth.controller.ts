@@ -89,12 +89,12 @@ export class AuthController {
     return this.authService.forgotPassword(forgotPasswordDto.email);
   }
 
-  // @Post('reset/password')
-  // @HttpCode(HttpStatus.NO_CONTENT)
-  // resetPassword(@Body() resetPasswordDto: AuthResetPasswordDto): Promise<void> {
-  //   return this.authService.resetPassword(
-  //     resetPasswordDto.hash,
-  //     resetPasswordDto.password,
-  //   );
-  // }
+  @Post('reset/password')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  resetPassword(@Body() resetPasswordDto: AuthResetPasswordDto): Promise<void> {
+    return this.authService.resetPassword(
+      resetPasswordDto.hash,
+      resetPasswordDto.password,
+    );
+  }
 }

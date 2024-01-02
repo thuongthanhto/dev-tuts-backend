@@ -215,29 +215,29 @@ export class AuthService {
     });
   }
 
-  // async resetPassword(hash: string, password: string): Promise<void> {
-  //   const forgot = await this.forgotService.findOne({
-  //     where: {
-  //       hash,
-  //     },
-  //   });
+  async resetPassword(hash: string, password: string): Promise<void> {
+    const forgot = await this.forgotService.findOne({
+      where: {
+        hash,
+      },
+    });
 
-  //   if (!forgot) {
-  //     throw new HttpException(
-  //       {
-  //         status: HttpStatus.UNPROCESSABLE_ENTITY,
-  //         errors: {
-  //           hash: `notFound`,
-  //         },
-  //       },
-  //       HttpStatus.UNPROCESSABLE_ENTITY,
-  //     );
-  //   }
+    if (!forgot) {
+      throw new HttpException(
+        {
+          status: HttpStatus.UNPROCESSABLE_ENTITY,
+          errors: {
+            hash: `notFound`,
+          },
+        },
+        HttpStatus.UNPROCESSABLE_ENTITY,
+      );
+    }
 
-  //   const user = forgot.user;
-  //   user.password = password;
+    const user = forgot.user;
+    user.password = password;
 
-  //   await user.save();
-  //   await this.forgotService.softDelete(forgot.id);
-  // }
+    await user.save();
+    await this.forgotService.softDelete(forgot.id);
+  }
 }
