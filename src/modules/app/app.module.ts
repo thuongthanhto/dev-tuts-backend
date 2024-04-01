@@ -7,6 +7,7 @@ import { AuthModule } from '../auth/auth.module';
 import { DatabaseModule } from '../database/database.module';
 import { UsersModule } from '../users/users.module';
 import {
+  appConfig,
   databaseConfig,
   authConfig,
   googleConfig,
@@ -17,7 +18,13 @@ import {
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [databaseConfig, authConfig, googleConfig, facebookConfig],
+      load: [
+        appConfig,
+        databaseConfig,
+        authConfig,
+        googleConfig,
+        facebookConfig,
+      ],
       envFilePath: ['.env'],
     }),
     DatabaseModule,
