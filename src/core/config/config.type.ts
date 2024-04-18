@@ -39,8 +39,8 @@ export type DatabaseConfig = {
 };
 
 export type FacebookConfig = {
-  appId: string;
-  appSecret: string;
+  appId?: string;
+  appSecret?: string;
 };
 
 export type FileConfig = {
@@ -54,7 +54,7 @@ export type FileConfig = {
 };
 
 export type GoogleConfig = {
-  clientId: string;
+  clientId?: string;
   clientSecret?: string;
 };
 

@@ -4,7 +4,6 @@ import { ConfigModule } from '@nestjs/config';
 import { AppController } from './controllers/app.controller';
 import { AppService } from './services/app.service';
 import { AuthModule } from '../auth/auth.module';
-import { DatabaseModule } from '../database/database.module';
 import { UsersModule } from '../users/users.module';
 import {
   appConfig,
@@ -13,6 +12,9 @@ import {
   googleConfig,
   facebookConfig,
 } from '../../core/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { TypeOrmConfigService } from '../database/typeorm-config.service';
+import { DataSource, DataSourceOptions } from 'typeorm';
 
 @Module({
   imports: [
@@ -27,7 +29,12 @@ import {
       ],
       envFilePath: ['.env'],
     }),
-    DatabaseModule,
+    TypeOrmModule.forRootAsync({
+      useClass: TypeOrmConfigService,
+      dataSourceFactory: async (options: DataSourceOptions) => {
+        return new DataSource(options).initialize();
+      },
+    }),
     UsersModule,
     AuthModule,
   ],

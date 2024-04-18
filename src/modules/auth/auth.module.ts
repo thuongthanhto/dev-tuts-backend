@@ -1,12 +1,10 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { AuthService } from './services/auth.service';
+// import { AuthService } from './services/auth.service';
 import { AuthController } from './auth.controller';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
-import { User } from '../database/entities';
 import {
   AccessTokenStrategy,
   RefreshTokenStrategy,
@@ -21,12 +19,11 @@ import { AuthFacebookService } from './services/auth-facebook.service';
     ConfigModule,
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({}),
-    TypeOrmModule.forFeature([User]),
   ],
   providers: [
     IsExist,
     IsNotExist,
-    AuthService,
+    // AuthService,
     AuthGoogleService,
     AuthFacebookService,
     AccessTokenStrategy,

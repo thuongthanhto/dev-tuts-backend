@@ -1,4 +1,4 @@
-import { User } from '../database/entities';
+import { User } from '../users/domain/user';
 
 export interface FacebookInterface {
   id: string;
@@ -15,9 +15,9 @@ export interface GoogleInterface {
 }
 export interface SocialInterface {
   id: string;
-  first_name: string;
-  last_name: string;
-  email: string;
+  first_name?: string;
+  last_name?: string;
+  email?: string;
 }
 
 export type LoginResponseType = Readonly<{

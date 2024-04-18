@@ -4,8 +4,8 @@ import DailyRotateFile from 'winston-daily-rotate-file';
 /** Logging winston setup * */
 export class CustomLoggerService {
   dailyRotateFileTransport: any = null;
-  myFormat: winston.Logform.Format = null;
-  createLoggerConfig: winston.LoggerOptions = null;
+  myFormat: winston.Logform.Format;
+  createLoggerConfig: winston.LoggerOptions;
 
   constructor() {
     this.dailyRotateFileTransport = new DailyRotateFile({

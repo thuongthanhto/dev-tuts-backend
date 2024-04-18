@@ -4,7 +4,7 @@ import { OAuth2Client } from 'google-auth-library';
 import { SocialInterface } from '../auth.types';
 import { AuthGoogleLoginDto } from '../dto';
 import { AllConfigType } from '../../../core/config/config.type';
-import { GoogleInterface } from  '../auth.types';
+import { GoogleInterface } from '../auth.types';
 
 @Injectable()
 export class AuthGoogleService {
@@ -27,7 +27,7 @@ export class AuthGoogleService {
       ],
     });
 
-    const data: GoogleInterface = ticket.getPayload();
+    const data: GoogleInterface | undefined = ticket.getPayload();
 
     if (!data) {
       throw new HttpException(
