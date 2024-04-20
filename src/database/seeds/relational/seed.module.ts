@@ -8,8 +8,11 @@ import { appConfig, databaseConfig } from 'src/core/config';
 
 import { RoleSeedModule } from './role/role-seed.module';
 
+import { StatusSeedModule } from './status/status-seed.module';
+
 @Module({
   imports: [
+    StatusSeedModule,
     RoleSeedModule,
     ConfigModule.forRoot({
       isGlobal: true,

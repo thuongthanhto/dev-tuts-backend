@@ -1,5 +1,6 @@
 import { Exclude, Expose } from 'class-transformer';
 import { Role } from '../../roles/domain/role';
+import { Status } from '../../statuses/domain/status';
 
 export class User {
   id: number | string;
@@ -22,7 +23,7 @@ export class User {
   lastName: string | null;
   // photo?: FileType | null;
   role?: Role | null;
-  // status?: Status;
+  status?: Status;
   createdAt: Date;
   updatedAt: Date;
   deletedAt: Date;
