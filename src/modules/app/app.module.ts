@@ -13,7 +13,7 @@ import {
   facebookConfig,
 } from '../../core/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { TypeOrmConfigService } from '../database/typeorm-config.service';
+import { TypeOrmConfigService } from '../../database/typeorm-config.service';
 import { DataSource, DataSourceOptions } from 'typeorm';
 
 @Module({
