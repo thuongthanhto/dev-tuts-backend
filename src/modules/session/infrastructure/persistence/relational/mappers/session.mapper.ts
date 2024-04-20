@@ -14,6 +14,7 @@ export class SessionMapper {
     session.createdAt = raw.createdAt;
     session.updatedAt = raw.updatedAt;
     session.deletedAt = raw.deletedAt;
+
     return session;
   }
 

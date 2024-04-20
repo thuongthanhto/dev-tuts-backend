@@ -4,11 +4,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { DataSource, DataSourceOptions } from 'typeorm';
 import { TypeOrmConfigService } from '../../typeorm-config.service';
-import { appConfig, databaseConfig } from 'src/core/config';
-
 import { RoleSeedModule } from './role/role-seed.module';
-
 import { StatusSeedModule } from './status/status-seed.module';
+import { appConfig, databaseConfig } from '../../../core/config';
 
 @Module({
   imports: [

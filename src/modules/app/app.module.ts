@@ -15,6 +15,7 @@ import {
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmConfigService } from '../../database/typeorm-config.service';
 import { DataSource, DataSourceOptions } from 'typeorm';
+import { SessionModule } from '../session/session.module';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { DataSource, DataSourceOptions } from 'typeorm';
     }),
     UsersModule,
     AuthModule,
+    SessionModule,
   ],
   controllers: [AppController],
   providers: [AppService],

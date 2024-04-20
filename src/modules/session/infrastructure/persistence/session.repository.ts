@@ -1,6 +1,6 @@
+import { EntityCondition } from '../../../../core/utils/types/entity-condition.type';
+import { NullableType } from '../../../../core/utils/types/nullable.type';
 import { User } from '../../../users/domain/user';
-import { EntityCondition } from '../../../utils/types/entity-condition.type';
-import { NullableType } from '../../../utils/types/nullable.type';
 import { Session } from '../../domain/session';
 
 export abstract class SessionRepository {

@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
-// import { AuthService } from './services/auth.service';
+import { AuthService } from './services/auth.service';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 import { AuthEmailLoginDto } from './dto/auth-email-login.dto';
 import { AccessTokenGuard } from '../../core/guards';
@@ -19,6 +19,7 @@ import { LoginResponseType } from './auth.types';
 import { AuthFacebookLoginDto, AuthGoogleLoginDto } from './dto';
 import { AuthGoogleService } from './services/auth-google.service';
 import { AuthFacebookService } from './services/auth-facebook.service';
+import { AuthRegisterDto } from './dto/auth-register.dto';
 
 @ApiTags('Auth')
 @Controller({
@@ -27,10 +28,16 @@ import { AuthFacebookService } from './services/auth-facebook.service';
 })
 export class AuthController {
   constructor(
-    // private authService: AuthService,
+    private authService: AuthService,
     private authGoogleService: AuthGoogleService,
     private authFacebookService: AuthFacebookService,
   ) {}
+
+  @Post('email/register')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async register(@Body() createUserDto: AuthRegisterDto): Promise<void> {
+    return this.authService.register(createUserDto);
+  }
 
   // @Post('/signup')
   // signUp(@Body() authCredentialsDto: AuthCredentialsDto): Promise<void> {
