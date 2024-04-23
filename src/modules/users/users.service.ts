@@ -11,6 +11,8 @@ import { User } from './domain/user';
 import { AuthProvidersEnum } from '../auth/auth-providers.enum';
 import { RoleEnum } from '../roles/roles.enum';
 import { StatusEnum } from '../statuses/statuses.enum';
+import { EntityCondition } from '../../core/utils/types/entity-condition.type';
+import { NullableType } from '../../core/utils/types/nullable.type';
 
 @Injectable()
 export class UsersService {
@@ -85,5 +87,9 @@ export class UsersService {
     }
 
     return this.usersRepository.create(clonedPayload);
+  }
+
+  findOne(fields: EntityCondition<User>): Promise<NullableType<User>> {
+    return this.usersRepository.findOne(fields);
   }
 }

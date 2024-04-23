@@ -21,7 +21,8 @@ export interface SocialInterface {
 }
 
 export type LoginResponseType = Readonly<{
-  access_token: string;
-  refresh_token: string;
+  token: string;
+  refreshToken: string;
+  tokenExpires: number;
   user: User;
 }>;

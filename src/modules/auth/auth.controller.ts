@@ -7,6 +7,7 @@ import {
   HttpStatus,
   Post,
   UseGuards,
+  SerializeOptions,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
@@ -32,6 +33,17 @@ export class AuthController {
     private authGoogleService: AuthGoogleService,
     private authFacebookService: AuthFacebookService,
   ) {}
+
+  @SerializeOptions({
+    groups: ['me'],
+  })
+  @Post('email/login')
+  @HttpCode(HttpStatus.OK)
+  public login(
+    @Body() loginDto: AuthEmailLoginDto,
+  ): Promise<LoginResponseType> {
+    return this.authService.validateLogin(loginDto);
+  }
 
   @Post('email/register')
   @HttpCode(HttpStatus.NO_CONTENT)
