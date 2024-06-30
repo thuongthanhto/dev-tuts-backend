@@ -3,14 +3,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { FindOptionsWhere, Not, Repository } from 'typeorm';
 import { SessionEntity } from '../entities/session.entity';
 
-import { SessionRepository } from '../../session.repository';
-import { Session } from '../../../../domain/session';
+import { SessionRepository } from '../session.repository';
+import { Session } from '../../../domain/session';
 
 import { SessionMapper } from '../mappers/session.mapper';
-import { User } from '../../../../../users/domain/user';
-import { UserEntity } from '../../../../../users/infrastructure/persistence/relational/entities/user.entity';
-import { NullableType } from '../../../../../../core/utils/types/nullable.type';
-import { EntityCondition } from '../../../../../../core/utils/types/entity-condition.type';
+import { User } from '../../../../users/domain/user';
+import { UserEntity } from '../../../../users/infrastructure/persistence/relational/entities/user.entity';
+import { NullableType } from '../../../../../core/utils/types/nullable.type';
+import { EntityCondition } from '../../../../../core/utils/types/entity-condition.type';
 
 @Injectable()
 export class SessionRelationalRepository implements SessionRepository {

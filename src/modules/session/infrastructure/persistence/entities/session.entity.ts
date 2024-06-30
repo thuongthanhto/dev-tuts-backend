@@ -9,9 +9,9 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-import { UserEntity } from '../../../../../users/infrastructure/persistence/relational/entities/user.entity';
-import { EntityRelationalHelper } from '../../../../../../core/utils/relational-entity-helper';
-import { Session } from '../../../../domain/session';
+import { UserEntity } from '../../../../users/infrastructure/persistence/relational/entities/user.entity';
+import { EntityRelationalHelper } from '../../../../../core/utils/relational-entity-helper';
+import { Session } from '../../../domain/session';
 
 @Entity({
   name: 'session',

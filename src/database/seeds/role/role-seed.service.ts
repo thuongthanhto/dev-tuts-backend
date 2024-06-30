@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { RoleEntity } from '../../../../modules/roles/infrastructure/persistence/relational/entities/role.entity';
+import { RoleEntity } from '../../../modules/roles/infrastructure/persistence/entities/role.entity';
 import { Repository } from 'typeorm';
-import { RoleEnum } from '../../../../modules/roles/roles.enum';
+import { RoleEnum } from '../../../modules/roles/roles.enum';
 
 @Injectable()
 export class RoleSeedService {

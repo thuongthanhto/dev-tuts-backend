@@ -14,7 +14,7 @@ import { Exclude, Expose } from 'class-transformer';
 import { User } from '../../../../domain/user';
 import { EntityRelationalHelper } from '../../../../../../core/utils/relational-entity-helper';
 import { AuthProvidersEnum } from '../../../../../auth/auth-providers.enum';
-import { RoleEntity } from '../../../../../roles/infrastructure/persistence/relational/entities/role.entity';
+import { RoleEntity } from '../../../../../roles/infrastructure/persistence/entities/role.entity';
 
 @Entity({
   name: 'user',
