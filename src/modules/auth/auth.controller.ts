@@ -9,7 +9,7 @@ import {
   UseGuards,
   SerializeOptions,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 import { AuthService } from './services/auth.service';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
@@ -21,6 +21,9 @@ import { AuthFacebookLoginDto, AuthGoogleLoginDto } from './dto';
 import { AuthGoogleService } from './services/auth-google.service';
 import { AuthFacebookService } from './services/auth-facebook.service';
 import { AuthRegisterDto } from './dto/auth-register.dto';
+import { AuthGuard } from '@nestjs/passport';
+import { NullableType } from '../../core/utils/types/nullable.type';
+import { User } from '../users/domain/user';
 
 @ApiTags('Auth')
 @Controller({
@@ -49,6 +52,27 @@ export class AuthController {
   @HttpCode(HttpStatus.NO_CONTENT)
   async register(@Body() createUserDto: AuthRegisterDto): Promise<void> {
     return this.authService.register(createUserDto);
+  }
+
+  @ApiBearerAuth()
+  @Post('logout')
+  @UseGuards(AuthGuard('jwt'))
+  @HttpCode(HttpStatus.NO_CONTENT)
+  public async logout(@Request() request): Promise<void> {
+    await this.authService.logout({
+      sessionId: request.user.sessionId,
+    });
+  }
+
+  @ApiBearerAuth()
+  @SerializeOptions({
+    groups: ['me'],
+  })
+  @Get('me')
+  @UseGuards(AuthGuard('jwt'))
+  @HttpCode(HttpStatus.OK)
+  public me(@Request() request): Promise<NullableType<User>> {
+    return this.authService.me(request.user);
   }
 
   // @Post('/signup')

@@ -21,6 +21,9 @@ import { Session } from '../../session/domain/session';
 import { ConfigService } from '@nestjs/config';
 import { AllConfigType } from '../../../core/config/config.type';
 import { AuthEmailLoginDto } from '../dto';
+import { JwtRefreshPayloadType } from '../strategies/types/jwt-refresh-payload.type';
+import { JwtPayloadType } from '../strategies/types/jwt-payload.type';
+import { NullableType } from '../../../core/utils/types/nullable.type';
 
 @Injectable()
 export class AuthService {
@@ -131,6 +134,18 @@ export class AuthService {
     //     hash,
     //   },
     // });
+  }
+
+  async logout(data: Pick<JwtRefreshPayloadType, 'sessionId'>) {
+    return this.sessionService.softDelete({
+      id: data.sessionId,
+    });
+  }
+
+  async me(userJwtPayload: JwtPayloadType): Promise<NullableType<User>> {
+    return this.usersService.findOne({
+      id: userJwtPayload.id,
+    });
   }
 
   private async getTokensData(data: {
